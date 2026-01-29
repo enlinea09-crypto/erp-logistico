@@ -1,46 +1,46 @@
-import { useEffect, useState } from "react"
-import erpApi from "../api/erpApi"
+import { useEffect, useState } from "react";
+import erpApi from "../api/erpApi";
 
 function Dashboard() {
 
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState({
     orders: 0,
     vehicles: 0,
     drivers: 0
-  })
+  });
 
   useEffect(() => {
-    loadData()
-  }, [])
+    loadData();
+  }, []);
 
   const loadData = async () => {
 
     try {
 
-      const ordersRes = await erpApi.get("/orders")
-      const vehiclesRes = await erpApi.get("/vehicles")
-      const driversRes = await erpApi.get("/drivers")
+      const ordersRes = await erpApi.get("/api/orders");
+      const vehiclesRes = await erpApi.get("/api/vehicles");
+      const driversRes = await erpApi.get("/api/drivers");
 
       setStats({
         orders: ordersRes.data.length,
         vehicles: vehiclesRes.data.length,
         drivers: driversRes.data.length
-      })
+      });
 
     } catch (error) {
 
-      console.error("Dashboard error:", error)
+      console.error("Dashboard error:", error);
 
     } finally {
 
-      setLoading(false)
+      setLoading(false);
 
     }
-  }
+  };
 
   if (loading) {
-    return <div className="p-6">Cargando Dashboard...</div>
+    return <div className="p-6">Cargando Dashboard...</div>;
   }
 
   return (
@@ -71,7 +71,7 @@ function Dashboard() {
       </div>
 
     </div>
-  )
+  );
 }
 
-export default Dashboard
+export default Dashboard;

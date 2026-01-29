@@ -11,7 +11,7 @@ function Login({ onLogin }) {
 
   try {
 
-   const res = await erpApi.post("/auth/login", {
+   const res = await erpApi.post("/api/auth/login", {
     email,
     password
    })

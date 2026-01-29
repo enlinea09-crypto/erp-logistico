@@ -1,19 +1,19 @@
-import axios from "axios"
+import axios from "axios";
 
 const erpApi = axios.create({
-    baseURL: "https://api.erp.slnebar.com/api"
-})
+  baseURL: import.meta.env.VITE_API_URL,
+});
 
-// Interceptor JWT
-erpApi.interceptors.request.use(config => {
+// Interceptor para enviar token
+erpApi.interceptors.request.use((config) => {
 
- const token = localStorage.getItem("token")
+  const token = localStorage.getItem("token");
 
- if (token) {
-  config.headers.Authorization = `Bearer ${token}`
- }
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
 
- return config
-})
+  return config;
+});
 
-export default erpApi
+export default erpApi;
