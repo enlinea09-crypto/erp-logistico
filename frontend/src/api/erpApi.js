@@ -1,7 +1,7 @@
 import axios from "axios"
 
 const erpApi = axios.create({
- baseURL: "https://erp-logistico-production.up.railway.app"
+    baseURL: "https://api.erp.slnebar.com/api"
 })
 
 // Interceptor JWT

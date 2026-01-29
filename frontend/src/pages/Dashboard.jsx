@@ -1,69 +1,77 @@
 import { useEffect, useState } from "react"
 import erpApi from "../api/erpApi"
-import Layout from "../layout/Layout"
-import KpiChart from "../components/KpiChart"
 
+function Dashboard() {
 
+  const [loading, setLoading] = useState(true)
+  const [stats, setStats] = useState({
+    orders: 0,
+    vehicles: 0,
+    drivers: 0
+  })
 
-function Dashboard({ setPage }) {
+  useEffect(() => {
+    loadData()
+  }, [])
 
+  const loadData = async () => {
 
- const [data, setData] = useState(null)
+    try {
 
- useEffect(() => {
+      const ordersRes = await erpApi.get("/orders")
+      const vehiclesRes = await erpApi.get("/vehicles")
+      const driversRes = await erpApi.get("/drivers")
 
-  erpApi.get("/kpi/dashboard")
-   .then(res => setData(res.data))
+      setStats({
+        orders: ordersRes.data.length,
+        vehicles: vehiclesRes.data.length,
+        drivers: driversRes.data.length
+      })
 
- }, [])
+    } catch (error) {
 
- if (!data) return <p>Cargando...</p>
+      console.error("Dashboard error:", error)
 
- return (
+    } finally {
 
-  <Layout setPage={setPage}>
+      setLoading(false)
 
-   <h1 className="text-2xl font-bold mb-4">
-    Dashboard ERP Logístico
-   </h1>
+    }
+  }
 
-   <div className="grid grid-cols-4 gap-4">
+  if (loading) {
+    return <div className="p-6">Cargando Dashboard...</div>
+  }
 
-    <div className="bg-white p-4 shadow rounded">
-     <p>Total Ingresos</p>
-     <h2>${data.finance.total_income}</h2>
+  return (
+
+    <div className="p-6">
+
+      <h1 className="text-2xl font-bold mb-6">
+        ERP Logístico — Dashboard
+      </h1>
+
+      <div className="grid grid-cols-3 gap-4">
+
+        <div className="bg-white p-4 shadow rounded">
+          <h3>Órdenes</h3>
+          <p className="text-2xl">{stats.orders}</p>
+        </div>
+
+        <div className="bg-white p-4 shadow rounded">
+          <h3>Vehículos</h3>
+          <p className="text-2xl">{stats.vehicles}</p>
+        </div>
+
+        <div className="bg-white p-4 shadow rounded">
+          <h3>Conductores</h3>
+          <p className="text-2xl">{stats.drivers}</p>
+        </div>
+
+      </div>
+
     </div>
-
-    <div className="bg-white p-4 shadow rounded">
-     <p>Total Costos</p>
-     <h2>${data.finance.total_cost}</h2>
-    </div>
-
-    <div className="bg-white p-4 shadow rounded">
-     <p>Utilidad</p>
-     <h2>${data.finance.total_profit}</h2>
-    </div>
-
-    <div className="bg-white p-4 shadow rounded">
-     <p>Flota Activa</p>
-     <h2>{data.active_vehicles}</h2>
-    </div>
-
-   </div>
-   <div className="bg-white mt-8 p-4 rounded shadow h-[350px]">
-
- <h2 className="font-bold mb-3">
-  Resumen Financiero
- </h2>
-
- <KpiChart finance={data.finance} />
-
-</div>
-
-  </Layout>
-
- )
-
+  )
 }
 
 export default Dashboard

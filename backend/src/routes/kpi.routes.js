@@ -1,9 +1,9 @@
-const express = require("express")
-const router = express.Router()
+const express = require("express");
+const router = express.Router();
 
-const verifyToken = require("../middlewares/auth.middleware")
-const kpiController = require("../controllers/kpi.controller")
+const { getDashboardKPI } = require("../controllers/kpi.controller");
+const authMiddleware = require("../middlewares/authMiddleware");
 
-router.get("/dashboard", verifyToken, kpiController.getDashboard)
+router.get("/dashboard", authMiddleware, getDashboardKPI);
 
-module.exports = router
+module.exports = router;
