@@ -1,11 +1,10 @@
 require("dotenv").config();
 
-const helmet = require("helmet");
 //const express = require("express");
-const cors = require("cors");
-
 //const app = express()
 
+const helmet = require("helmet");
+const cors = require("cors");
 
 // MIDDLEWARES — DEBEN IR ANTES DE RUTAS
 app.use(helmet());
@@ -15,10 +14,11 @@ app.use(cors({
     "https://erp.slnebar.com",
     "http://localhost:5173"
   ],
-  credentials: true
+  methods: ["GET","POST","PUT","DELETE"],
+  allowedHeaders: ["Content-Type","Authorization"]
 }));
 
-//app.use(express.json());  // <<<<<< ESTO ES OBLIGATORIO
+app.use(express.json());  // <<<<<< ESTO ES OBLIGATORIO
 
 
 
