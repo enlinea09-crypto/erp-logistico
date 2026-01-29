@@ -1,14 +1,24 @@
 require("dotenv").config();
 
-const express = require("express")
-const cors = require("cors")
+const helmet = require("helmet");
+//const express = require("express");
+const cors = require("cors");
 
-const app = express()
+//const app = express()
 
 
 // MIDDLEWARES — DEBEN IR ANTES DE RUTAS
-app.use(cors())
-app.use(express.json())  // <<<<<< ESTO ES OBLIGATORIO
+app.use(helmet());
+
+app.use(cors({
+  origin: [
+    "https://erp.slnebar.com",
+    "http://localhost:5173"
+  ],
+  credentials: true
+}));
+
+//app.use(express.json());  // <<<<<< ESTO ES OBLIGATORIO
 
 
 
